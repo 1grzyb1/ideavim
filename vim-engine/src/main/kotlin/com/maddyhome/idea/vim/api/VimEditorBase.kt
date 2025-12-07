@@ -22,6 +22,7 @@ abstract class VimEditorBase : VimEditor {
       if (oldValue == Mode.REPLACE) {
         forgetAllReplaceMasks()
       }
+      injector.autoCmd.notifyModeChanged(oldValue, value)
       updateMode(value)
       injector.listenersNotifier.notifyModeChanged(this, oldValue)
     }
