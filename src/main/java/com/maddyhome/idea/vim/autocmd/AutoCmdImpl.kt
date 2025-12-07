@@ -19,6 +19,10 @@ class AutoCmdImpl : AutoCmdService {
     eventHandlers.getOrPut(event) { mutableListOf() }.add(command)
   }
 
+  override fun clearEvents() {
+    eventHandlers.clear()
+  }
+
   override fun handleEvent(event: AutoCmdEvent) {
     eventHandlers[event]?.forEach { executeCommand(it) }
   }

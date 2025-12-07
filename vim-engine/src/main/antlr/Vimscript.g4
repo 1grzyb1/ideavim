@@ -115,7 +115,7 @@ command:
         | ASSIGN    // `:=` print last line number
         | B_LOWERCASE | BUFFER| BUFFER_CLOSE | BUFFER_LIST
         | CLASS | CLEARJUMPS | CMD_CLEAR | COPY
-        | D_LOWERCASE | DELETE | DELCOMMAND | DELMARKS | DIGRAPHS | DUMPLINE
+        | D_LOWERCASE | DELETE | DELCOMMAND | DELMARKS | DIGRAPHS | DUMPLINE | AUTOCMD
         | E_LOWERCASE | EDIT_FILE | EXIT
         | F_LOWERCASE | FILE | FIND
         | GOTO
@@ -572,6 +572,7 @@ existingCommands:       ACTION
                     |   WRITE_PREVIOUS
                     |   WRITE_QUIT
                     |   YANK
+                    |   AUTOCMD
 ;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -687,6 +688,7 @@ DELETE:                 'de' | 'del' | 'dele' | 'delet' | 'delete';
 DELFUNCTION:            'delf' | 'delfu' | 'delfun' | 'delfunc'| 'delfunct' | 'delfuncti' | 'delfunctio' | 'delfunction';
 DELMARKS:               'delm' | 'delma' | 'delmar' | 'delmark' | 'delmarks';
 DIGRAPHS:               'dig' | 'digr' | 'digra' | 'digrap' | 'digraph' | 'digraphs';
+AUTOCMD:                'autocmd' | 'au';
 DUMPLINE:               'dump' | 'dumpl' | 'dumpli' | 'dumplin' | 'dumpline';
 ECHO:                   'ec' | 'ech' | 'echo';
 EDIT_FILE:              'bro' | 'brow' | 'brows' | 'browse' | 'ed' | 'edi' | 'edit';

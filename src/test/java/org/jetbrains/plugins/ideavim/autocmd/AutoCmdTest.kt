@@ -11,13 +11,21 @@ package org.jetbrains.plugins.ideavim.autocmd
 import com.maddyhome.idea.vim.api.injector
 import com.maddyhome.idea.vim.state.mode.Mode
 import org.jetbrains.plugins.ideavim.VimTestCase
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 
 class AutoCmdTest :  VimTestCase() {
 
+  @BeforeEach
+  override fun setUp(testInfo: TestInfo) {
+    super.setUp(testInfo)
+    configureByText("\n")
+    enterCommand("autocmd!")
+  }
+
   @Test
   fun `should execute command on InsertEnter`() {
-    configureByText("asdfasd")
     enterCommand("autocmd InsertEnter * echo 23")
     typeText(injector.parser.parseKeys("i"))
     assertExOutput("23")
@@ -26,7 +34,6 @@ class AutoCmdTest :  VimTestCase() {
 
   @Test
   fun `should do nothing on invalid syntax`() {
-    configureByText("asdfasd")
     enterCommand("autocmd InsertEnter  echo 23")
     typeText(injector.parser.parseKeys("i"))
     assertNoExOutput()
@@ -34,11 +41,18 @@ class AutoCmdTest :  VimTestCase() {
 
   @Test
   fun `should execute command on InsertLeave`() {
-    configureByText("asdfasd")
     enterCommand("autocmd InsertLeave * echo 23")
     typeText(injector.parser.parseKeys("i"))
     typeText(injector.parser.parseKeys("<esc>"))
     assertState(Mode.NORMAL())
     assertExOutput("23")
+  }
+
+  @Test
+  fun `should clear commands`() {
+    enterCommand("autocmd InsertEnter * echo 23")
+    enterCommand("autocmd!")
+    typeText(injector.parser.parseKeys("i"))
+    assertNoExOutput()
   }
 }

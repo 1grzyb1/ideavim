@@ -22,13 +22,17 @@ data class AutoCmdCommand(val range: Range, val modifier: CommandModifier, val a
   Command.SingleExecution(range, modifier, argument) {
 
   override val argFlags: CommandHandlerFlags =
-    flags(RangeFlag.RANGE_FORBIDDEN, ArgumentFlag.ARGUMENT_REQUIRED, Access.SELF_SYNCHRONIZED)
+    flags(RangeFlag.RANGE_FORBIDDEN, ArgumentFlag.ARGUMENT_OPTIONAL, Access.SELF_SYNCHRONIZED)
 
   override fun processCommand(
     editor: VimEditor,
     context: ExecutionContext,
     operatorArguments: OperatorArguments,
   ): ExecutionResult {
+    if (modifier == CommandModifier.BANG) {
+      injector.autoCmd.clearEvents()
+      return ExecutionResult.Success
+    }
     val args = parseArgument(argument).onSuccess {
       injector.autoCmd.registerEventCommand(it.second, it.first)
     }
