@@ -17,7 +17,7 @@ import com.maddyhome.idea.vim.command.OperatorArguments
 import com.maddyhome.idea.vim.ex.ranges.Range
 import com.maddyhome.idea.vim.vimscript.model.ExecutionResult
 
-@ExCommand(command = "autocmd")
+@ExCommand(command = "au[tocmd]")
 data class AutoCmdCommand(val range: Range, val modifier: CommandModifier, val argument: String) :
   Command.SingleExecution(range, modifier, argument) {
 
@@ -30,7 +30,7 @@ data class AutoCmdCommand(val range: Range, val modifier: CommandModifier, val a
     operatorArguments: OperatorArguments,
   ): ExecutionResult {
     val args = parseArgument(argument).onSuccess {
-      injector.autoCmd.registerEventCommand(it.component2(), it.component1())
+      injector.autoCmd.registerEventCommand(it.second, it.first)
     }
     if (args.isFailure) return ExecutionResult.Error
     return ExecutionResult.Success

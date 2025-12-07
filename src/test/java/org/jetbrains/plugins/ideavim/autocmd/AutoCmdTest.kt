@@ -9,6 +9,7 @@
 package org.jetbrains.plugins.ideavim.autocmd
 
 import com.maddyhome.idea.vim.api.injector
+import com.maddyhome.idea.vim.state.mode.Mode
 import org.jetbrains.plugins.ideavim.VimTestCase
 import org.junit.jupiter.api.Test
 
@@ -29,5 +30,15 @@ class AutoCmdTest :  VimTestCase() {
     enterCommand("autocmd InsertEnter  echo 23")
     typeText(injector.parser.parseKeys("i"))
     assertNoExOutput()
+  }
+
+  @Test
+  fun `should execute command on InsertLeave`() {
+    configureByText("asdfasd")
+    enterCommand("autocmd InsertLeave * echo 23")
+    typeText(injector.parser.parseKeys("i"))
+    typeText(injector.parser.parseKeys("<esc>"))
+    assertState(Mode.NORMAL())
+    assertExOutput("23")
   }
 }

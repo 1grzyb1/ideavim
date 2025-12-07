@@ -10,26 +10,16 @@ package com.maddyhome.idea.vim.autocmd
 
 import com.maddyhome.idea.vim.api.AutoCmdService
 import com.maddyhome.idea.vim.api.injector
-import com.maddyhome.idea.vim.state.mode.Mode
 
 class AutoCmdImpl : AutoCmdService {
 
   private val eventHandlers: MutableMap<AutoCmdEvent, MutableList<String>> = mutableMapOf()
 
-  override fun notifyModeChanged(
-    oldMode: Mode,
-    newMode: Mode,
-  ) {
-    if (oldMode != Mode.INSERT && newMode == Mode.INSERT) {
-      handleEvent(AutoCmdEvent.InsertEnter)
-    }
-  }
-
   override fun registerEventCommand(command: String, event: AutoCmdEvent) {
-   eventHandlers.getOrPut(event) { mutableListOf() }.add(command)
+    eventHandlers.getOrPut(event) { mutableListOf() }.add(command)
   }
 
-  fun handleEvent(event: AutoCmdEvent) {
+  override fun handleEvent(event: AutoCmdEvent) {
     eventHandlers[event]?.forEach { executeCommand(it) }
   }
 
