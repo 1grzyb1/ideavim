@@ -21,4 +21,13 @@ class AutoCmdTest :  VimTestCase() {
     typeText(injector.parser.parseKeys("i"))
     assertExOutput("23")
   }
+
+
+  @Test
+  fun `should do nothing on invalid syntax`() {
+    configureByText("asdfasd")
+    enterCommand("autocmd InsertEnter  echo 23")
+    typeText(injector.parser.parseKeys("i"))
+    assertNoExOutput()
+  }
 }
