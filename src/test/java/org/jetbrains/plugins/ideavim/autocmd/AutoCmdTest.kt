@@ -16,8 +16,8 @@ class AutoCmdTest :  VimTestCase() {
 
   @Test
   fun `should execute command on InsertEnter`() {
-    configureByText("")
-    enterCommand("autocmd InsertEnter echo 23")
+    configureByText("asdfasd")
+    enterCommand("autocmd InsertEnter * echo 23")
     typeText(injector.parser.parseKeys("i"))
     assertExOutput("23")
   }

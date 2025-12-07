@@ -14,14 +14,28 @@ import com.maddyhome.idea.vim.state.mode.Mode
 
 class AutoCmdImpl : AutoCmdService {
 
+  private val eventHandlers: MutableMap<AutoCmdEvent, MutableList<String>> = mutableMapOf()
+
   override fun notifyModeChanged(
     oldMode: Mode,
     newMode: Mode,
   ) {
-   if (oldMode != Mode.INSERT && newMode == Mode.INSERT) {
-     val editor = injector.editorGroup.getFocusedEditor() ?: return
-     val context = injector.executionContextManager.getEditorExecutionContext(editor)
-     injector.vimscriptExecutor.execute("echo 23", editor, context, skipHistory = true)
-   }
+    if (oldMode != Mode.INSERT && newMode == Mode.INSERT) {
+      handleEvent(AutoCmdEvent.InsertEnter)
+    }
+  }
+
+  override fun registerEventCommand(command: String, event: AutoCmdEvent) {
+   eventHandlers.getOrPut(event) { mutableListOf() }.add(command)
+  }
+
+  fun handleEvent(event: AutoCmdEvent) {
+    eventHandlers[event]?.forEach { executeCommand(it) }
+  }
+
+  private fun executeCommand(command: String) {
+    val editor = injector.editorGroup.getFocusedEditor() ?: return
+    val context = injector.executionContextManager.getEditorExecutionContext(editor)
+    injector.vimscriptExecutor.execute(command, editor, context, skipHistory = true)
   }
 }

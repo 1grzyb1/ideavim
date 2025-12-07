@@ -21,7 +21,7 @@ whileLoop:
 ;
 blockMember:
     command | finishStatement | continueStatement | breakStatement | forLoop| whileLoop | ifStatement
-|   returnStatement | throwStatement | functionDefinition | tryStatement | ((WS | COLON)* (NEW_LINE | BAR)) | autoCmd | comment;
+|   returnStatement | throwStatement | functionDefinition | tryStatement | ((WS | COLON)* (NEW_LINE | BAR)) | comment;
 
 comment:                (WS | COLON)* QUOTE ~(NEW_LINE)* NEW_LINE;
 
@@ -71,8 +71,6 @@ functionDefinition:
 functionFlag:           RANGE | ABORT | DICT | CLOSURE;
 argumentsDeclaration:   (ETC | defaultValue (WS* COMMA WS* defaultValue)* (WS* COMMA WS* ETC WS*)? | (variableName (WS* COMMA WS* variableName)* (WS* COMMA WS* defaultValue)* (WS* COMMA WS* ETC WS*)?))?;
 defaultValue:           variableName WS* ASSIGN WS* expr;
-
-autoCmd:                (WS | COLON)* AUTOCMD commandArgument = ~(NEW_LINE)*? NEW_LINE;
 
 augroup:                (WS | COLON)* AUGROUP .*? AUGROUP WS+ END WS* NEW_LINE;
 
@@ -641,7 +639,6 @@ MARK_BACKTICK:          '`'[a-zA-Z];
 
 // Keywords
 ABORT:                  'abort';
-AUTOCMD:                'au' | 'aut' | 'auto' | 'autoc' | 'autocm' | 'autocmd';
 AUGROUP:                'aug' | 'augr' | 'augro' | 'augrou' | 'augroup';
 BREAK:                  'brea' | 'break';
 CATCH:                  'cat' | 'catc'| 'catch';

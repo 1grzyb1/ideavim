@@ -13,4 +13,5 @@ import com.maddyhome.idea.vim.state.mode.Mode
 
 interface AutoCmdService {
   fun notifyModeChanged(oldMode: Mode, newMode: Mode)
+  fun registerEventCommand(command: String, event: AutoCmdEvent)
 }
