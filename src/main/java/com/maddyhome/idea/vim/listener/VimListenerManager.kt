@@ -65,6 +65,7 @@ import com.maddyhome.idea.vim.api.coerceOffset
 import com.maddyhome.idea.vim.api.getLineEndForOffset
 import com.maddyhome.idea.vim.api.getLineStartForOffset
 import com.maddyhome.idea.vim.api.injector
+import com.maddyhome.idea.vim.autocmd.AutoCmdEvent
 import com.maddyhome.idea.vim.group.EditorGroup
 import com.maddyhome.idea.vim.group.FileGroup
 import com.maddyhome.idea.vim.group.IjOptions
@@ -494,6 +495,7 @@ internal object VimListenerManager {
       EditorListeners.remove(event.editor)
       injector.listenersNotifier.notifyEditorReleased(vimEditor)
       injector.markService.editorReleased(vimEditor)
+      injector.autoCmd.handleEvent(AutoCmdEvent.BuffLeave)
 
       // This ticket will have a different stack trace, but it's the same problem. Originally, we tracked the last
       // editor closing based on file selection (closing an editor would select the next editor - so a null selection
@@ -553,6 +555,8 @@ internal object VimListenerManager {
           }
           EditorListeners.add(editor, openingEditor?.editor?.vim ?: injector.fallbackWindow, scenario)
           firstEditorInitialised = true
+
+          injector.autoCmd.handleEvent(AutoCmdEvent.BuffEnter)
         }
       }
     }
