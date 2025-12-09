@@ -133,7 +133,7 @@ class CommandTests : VimTestCase() {
         augroup END
       """.trimIndent(),
     )
-    assertEquals(2, script.units.size)
+    assertEquals(4, script.units.size)
     assertTrue(script.units[0] is PlugCommand)
     assertTrue(script.units[1] is SetCommand)
   }
@@ -150,7 +150,7 @@ class CommandTests : VimTestCase() {
         set nu rnu
       """.trimIndent(),
     )
-    assertEquals(2, script.units.size)
+    assertEquals(5, script.units.size)
     assertTrue(script.units[0] is PlugCommand)
     assertTrue(script.units[1] is SetCommand)
   }
