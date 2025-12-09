@@ -27,4 +27,6 @@ interface VimFile {
    * Focuses or opens a new VimEditor by [documentPath]
    */
   fun selectEditor(projectId: String, documentPath: String, protocol: String?): VimEditor?
+
+  fun openVirtualFile(context: ExecutionContext, fileName: String, fileContent: String, editor: VimEditor)
 }

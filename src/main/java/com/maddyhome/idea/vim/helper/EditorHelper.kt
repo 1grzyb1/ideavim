@@ -58,6 +58,7 @@ internal val Editor.isIdeaVimDisabledHere: Boolean
  */
 private fun Editor.isNotFileEditorExceptAllowed(): Boolean {
   if (EditorHelper.getVirtualFile(this)?.name?.contains("Dummy.txt") == true) return false
+  if (EditorHelper.getVirtualFile(this)?.name?.contains("command-history") == true) return false
   if (EditorHelper.isDiffEditor(this)) return false
   return !EditorHelper.isFileEditor(this)
 }
