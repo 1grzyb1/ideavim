@@ -22,13 +22,17 @@ class CommandHistoryAction : VimActionHandler.SingleExecution() {
 
   override val type: Command.Type = Command.Type.OTHER_WRITABLE
 
+  companion object {
+    const val COMMAND_HISTORY_FILE_NAME: String = "command-history"
+  }
+
   override fun execute(
     editor: VimEditor,
     context: ExecutionContext,
     cmd: Command,
     operatorArguments: OperatorArguments,
   ): Boolean {
-    injector.file.openVirtualFile(context, "command-history", "", editor)
+    injector.file.openVirtualFile(context, COMMAND_HISTORY_FILE_NAME, "", editor)
     return true
   }
 }

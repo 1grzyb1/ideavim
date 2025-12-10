@@ -33,7 +33,9 @@ import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
+import static com.maddyhome.idea.vim.action.CommandHistoryAction.COMMAND_HISTORY_FILE_NAME;
 import static com.maddyhome.idea.vim.api.VimInjectorKt.injector;
 import static java.lang.Integer.max;
 import static java.lang.Integer.min;
@@ -679,6 +681,10 @@ public class EditorHelper {
    */
   public static boolean isDiffEditor(@NotNull Editor editor) {
     return editor.getEditorKind() == EditorKind.DIFF;
+  }
+
+  public static boolean isCommandHistory(@NotNull Editor editor) {
+    return Objects.requireNonNull(editor.getVirtualFile()).getName().equals(COMMAND_HISTORY_FILE_NAME);
   }
 
   /**
