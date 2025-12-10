@@ -16,6 +16,7 @@ import com.maddyhome.idea.vim.api.injector
 import com.maddyhome.idea.vim.command.Command
 import com.maddyhome.idea.vim.command.OperatorArguments
 import com.maddyhome.idea.vim.handler.VimActionHandler
+import com.maddyhome.idea.vim.history.VimHistory
 
 @CommandOrMotion(keys = ["q:"], modes = [Mode.NORMAL])
 class CommandHistoryAction : VimActionHandler.SingleExecution() {
@@ -32,7 +33,9 @@ class CommandHistoryAction : VimActionHandler.SingleExecution() {
     cmd: Command,
     operatorArguments: OperatorArguments,
   ): Boolean {
-    injector.file.openVirtualFile(context, COMMAND_HISTORY_FILE_NAME, "", editor)
+    val historyEntries = injector.historyGroup.getEntries(VimHistory.Type.Command, 0, 0)
+    val historyFileContent = historyEntries.map { it.entry }.joinToString(separator = "\n")
+    injector.file.openVirtualFile(context, COMMAND_HISTORY_FILE_NAME, historyFileContent, editor)
     return true
   }
 }
