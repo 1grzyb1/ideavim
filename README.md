@@ -252,7 +252,7 @@ autocmd {event} * {command}
 autocmd!
 ````
 
-Supported events: `InsertEnter`, `InsertLeave`  
+Supported events: `InsertEnter`, `InsertLeave`, `BuffEnter`, `BuffLeave`   
 Only the `*` pattern is supported.
 
 ### Examples
@@ -266,6 +266,30 @@ autocmd InsertEnter * echo "second"
 ````
 
 `autocmd!` clears all registered handlers.
+
+### Augroup
+
+IdeaVim provides limited support for `:augroup` to organize autocommands.
+
+* `augroup NAME` … `augroup END` — opens or creates a group and **appends** handlers.
+* `augroup! NAME` — **clears** all handlers in that group (redefine from scratch).
+* `autocmd!` **inside** an augroup clears only that group’s handlers.
+* Groups are independent; clearing one does not affect others.
+
+```vim
+augroup MyGroup
+  autocmd InsertEnter * echo "A"
+augroup END
+
+augroup MyGroup          " Appends
+  autocmd InsertEnter * echo "B"
+augroup END
+
+augroup! MyGroup         " Reset group
+augroup MyGroup
+  autocmd InsertEnter * echo "C"
+augroup END
+```
 
 
 Vim Script
