@@ -10,6 +10,8 @@ package org.jetbrains.plugins.ideavim.ex.parser.commands
 
 import com.maddyhome.idea.vim.ex.ranges.LineAddress
 import com.maddyhome.idea.vim.ex.ranges.MarkAddress
+import com.maddyhome.idea.vim.vimscript.model.commands.AutoCmdCommand
+import com.maddyhome.idea.vim.vimscript.model.commands.AutogroupCommand
 import com.maddyhome.idea.vim.vimscript.model.commands.BufferCommand
 import com.maddyhome.idea.vim.vimscript.model.commands.DeleteLinesCommand
 import com.maddyhome.idea.vim.vimscript.model.commands.EchoCommand
@@ -151,7 +153,10 @@ class CommandTests : VimTestCase() {
       """.trimIndent(),
     )
     assertEquals(5, script.units.size)
-    assertTrue(script.units[0] is PlugCommand)
-    assertTrue(script.units[1] is SetCommand)
+    assertTrue(script.units[0] is AutogroupCommand)
+    assertTrue(script.units[1] is AutoCmdCommand)
+    assertTrue(script.units[2] is AutogroupCommand)
+    assertTrue(script.units[3] is PlugCommand)
+    assertTrue(script.units[4] is SetCommand)
   }
 }

@@ -88,7 +88,6 @@ class FileGroup : VimFileBase() {
 
     val editorWindow = fileEditorManager.splitters.currentWindow
     editorWindow?.split(SwingConstants.HORIZONTAL, true, virtualFile, true)
-//    editor.mode = Mode.NORMAL(editor.mode)
   }
 
 
