@@ -21,6 +21,7 @@ import com.intellij.openapi.editor.ex.util.EditorUtil
 import com.intellij.openapi.editor.impl.CaretModelImpl
 import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.openapi.vfs.VirtualFileManager
+import com.maddyhome.idea.vim.action.CommandHistoryAction.Companion.COMMAND_HISTORY_FILE_NAME
 import com.maddyhome.idea.vim.api.BufferPosition
 import com.maddyhome.idea.vim.api.ExecutionContext
 import com.maddyhome.idea.vim.api.ImmutableVimCaret
@@ -229,6 +230,10 @@ internal class IjVimEditor(editor: Editor) : MutableLinearEditor, VimEditorBase(
 
   override fun isOneLineMode(): Boolean {
     return editor.isOneLineMode
+  }
+
+  override fun isCommandHistory(): Boolean {
+    return editor.virtualFile?.name.equals(COMMAND_HISTORY_FILE_NAME)
   }
 
   override fun getText(left: Int, right: Int): CharSequence {

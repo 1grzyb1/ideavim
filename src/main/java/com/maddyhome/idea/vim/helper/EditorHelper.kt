@@ -16,6 +16,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ex.util.EditorUtil
 import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx
 import com.intellij.util.ui.table.JBTableRowEditor
+import com.maddyhome.idea.vim.action.CommandHistoryAction
 import com.maddyhome.idea.vim.api.StringListOptionValue
 import com.maddyhome.idea.vim.api.injector
 import com.maddyhome.idea.vim.group.IjOptionConstants
@@ -58,6 +59,7 @@ internal val Editor.isIdeaVimDisabledHere: Boolean
  */
 private fun Editor.isNotFileEditorExceptAllowed(): Boolean {
   if (EditorHelper.getVirtualFile(this)?.name?.contains("Dummy.txt") == true) return false
+  if (EditorHelper.getVirtualFile(this)?.name?.contains(CommandHistoryAction.COMMAND_HISTORY_FILE_NAME) == true) return false
   if (EditorHelper.isDiffEditor(this)) return false
   return !EditorHelper.isFileEditor(this)
 }
@@ -100,6 +102,8 @@ internal fun Editor.isTerminalEditor(): Boolean {
     && document.isWritable
     && !EditorHelper.isFileEditor(this)
     && !EditorHelper.isDiffEditor(this)
+    // I think we should have more generic approach of handling virtual buffer but it's MVP so ¯\_(ツ)_/¯
+    && !EditorHelper.isCommandHistory(this)
 }
 
 // Optimized clone of com.intellij.ide.ui.laf.darcula.DarculaUIUtil.isTableCellEditor

@@ -19,6 +19,7 @@ import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx
 import com.intellij.openapi.fileEditor.impl.EditorsSplitters
 import com.intellij.openapi.fileTypes.FileTypeManager
+import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.roots.ProjectRootManager
@@ -27,6 +28,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.ProjectScope
+import com.intellij.testFramework.LightVirtualFile
 import com.maddyhome.idea.vim.VimPlugin
 import com.maddyhome.idea.vim.api.ExecutionContext
 import com.maddyhome.idea.vim.api.VimEditor
@@ -40,6 +42,7 @@ import com.maddyhome.idea.vim.newapi.execute
 import com.maddyhome.idea.vim.newapi.globalIjOptions
 import java.io.File
 import java.util.*
+import javax.swing.SwingConstants
 
 class FileGroup : VimFileBase() {
   override fun openFile(filename: String, context: ExecutionContext): Boolean {
@@ -75,6 +78,18 @@ class FileGroup : VimFileBase() {
       return false
     }
   }
+
+  override fun openVirtualFile(context: ExecutionContext, fileName: String, fileContent: String, editor: VimEditor) {
+    val project = PlatformDataKeys.PROJECT.getData((context as IjEditorExecutionContext).context)
+      ?: return
+    val virtualFile: VirtualFile = LightVirtualFile(fileName, PlainTextFileType.INSTANCE, fileContent)
+
+    val fileEditorManager = FileEditorManagerEx.getInstanceEx(project)
+
+    val editorWindow = fileEditorManager.splitters.currentWindow
+    editorWindow?.split(SwingConstants.HORIZONTAL, true, virtualFile, true)
+  }
+
 
   fun findFile(filename: String, project: Project): VirtualFile? {
     var found: VirtualFile?

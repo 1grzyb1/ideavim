@@ -129,6 +129,8 @@ interface VimEditor {
   fun isDocumentWritable(): Boolean
   fun isOneLineMode(): Boolean
 
+  fun isCommandHistory(): Boolean
+
   /**
    * function for refactoring, get rid of it
    */

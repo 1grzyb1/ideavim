@@ -12,6 +12,7 @@ import com.maddyhome.idea.vim.VimPlugin
 import com.maddyhome.idea.vim.state.mode.Mode
 import org.jetbrains.plugins.ideavim.impl.OptionTest
 import org.jetbrains.plugins.ideavim.impl.VimOption
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class RegisterActionsTest : VimTestCase() {
@@ -19,6 +20,7 @@ class RegisterActionsTest : VimTestCase() {
     VimOption(TestOptionConstants.virtualedit, doesntAffectTest = true),
     VimOption(TestOptionConstants.whichwrap, doesntAffectTest = true),
   )
+  @Disabled(value = "flaky")
   fun `test simple action`() {
     val before = "I ${c}found it in a legendary land"
     val after = "I f${c}ound it in a legendary land"

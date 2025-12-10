@@ -2025,6 +2025,11 @@
         "modes": "NX"
     },
     {
+      "keys": "q:",
+      "class": "com.maddyhome.idea.vim.action.CommandHistoryAction",
+      "modes": "N"
+    },
+  {
         "keys": "r",
         "class": "com.maddyhome.idea.vim.action.change.change.ChangeCharacterAction",
         "modes": "N"
