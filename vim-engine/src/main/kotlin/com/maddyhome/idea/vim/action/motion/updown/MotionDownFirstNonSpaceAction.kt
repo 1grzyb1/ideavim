@@ -12,7 +12,10 @@ import com.intellij.vim.annotations.CommandOrMotion
 import com.intellij.vim.annotations.Mode
 import com.maddyhome.idea.vim.api.ExecutionContext
 import com.maddyhome.idea.vim.api.ImmutableVimCaret
+import com.maddyhome.idea.vim.api.VimCaret
 import com.maddyhome.idea.vim.api.VimEditor
+import com.maddyhome.idea.vim.api.getLineEndForOffset
+import com.maddyhome.idea.vim.api.getLineStartForOffset
 import com.maddyhome.idea.vim.api.injector
 import com.maddyhome.idea.vim.command.Argument
 import com.maddyhome.idea.vim.command.MotionType
@@ -48,6 +51,12 @@ class EnterNormalAction : MotionActionHandler.ForEachCaret() {
     argument: Argument?,
     operatorArguments: OperatorArguments,
   ): Motion {
+    if (editor.isCommandHistory()) {
+      editor.carets().forEach {
+        executeHistoryCommand(editor, it, context)
+      }
+      return Motion.NoMotion
+    }
     val templateState = injector.templateManager.getTemplateState(editor)
     return if (templateState != null) {
       injector.actionExecutor.executeAction(
@@ -59,5 +68,16 @@ class EnterNormalAction : MotionActionHandler.ForEachCaret() {
     } else {
       injector.motion.moveCaretToRelativeLineStartSkipLeading(editor, caret, operatorArguments.count1).toMotion()
     }
+  }
+
+  private fun executeHistoryCommand(
+    editor: VimEditor,
+    caret: VimCaret,
+    context: ExecutionContext,
+  ) {
+    val currentLineStart = editor.getLineStartForOffset(caret.offset)
+    val currentLineEnd = editor.getLineEndForOffset(caret.offset)
+    val command = editor.text().subSequence(currentLineStart, currentLineEnd).toString()
+    injector.vimscriptExecutor.execute(command, editor, context, skipHistory = false)
   }
 }

@@ -639,6 +639,9 @@ class VimRegex(pattern: String) {
     override fun isDocumentWritable(): Boolean = false
 
     override fun isOneLineMode(): Boolean = false
+    override fun isCommandHistory(): Boolean {
+      TODO("Not yet implemented")
+    }
 
     override fun search(
       pair: Pair<Int, Int>,
