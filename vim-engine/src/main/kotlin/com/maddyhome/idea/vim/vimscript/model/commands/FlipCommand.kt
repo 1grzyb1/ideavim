@@ -23,7 +23,7 @@ data class FlipCommand(val range: Range, val modifier: CommandModifier, val argu
   Command.SingleExecution(range, modifier, argument) {
 
   override val argFlags: CommandHandlerFlags =
-    flags(RangeFlag.RANGE_OPTIONAL, ArgumentFlag.ARGUMENT_OPTIONAL, Access.READ_ONLY)
+    flags(RangeFlag.RANGE_FORBIDDEN, ArgumentFlag.ARGUMENT_FORBIDDEN, Access.WRITABLE)
 
   override fun processCommand(
     editor: VimEditor,
